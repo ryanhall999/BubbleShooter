@@ -3,6 +3,7 @@ var BubbleShoot = window.BubbleShoot || {};
 BubbleShoot.Game = (function ($) {
 	var Game = function () {
 		var curBubble;
+		var board;
 		this.init = function () {
 			$(".butStartGame").bind("click", startGame);
 		};
@@ -10,6 +11,8 @@ BubbleShoot.Game = (function ($) {
 			$(".butStartGame").unbind("click");
 			BubbleShoot.ui.hideDialog();
 			curBubble = getNextBubble();
+			board = new BubbleShoot.Board();
+			BubbleShoot.ui.drawBoard(board);
 			$("#game").bind("click", clickGameScreen);
 		};
 		var getNextBubble = function () {
