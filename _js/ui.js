@@ -5,19 +5,23 @@ BubbleShoot.ui = (function ($) {
 		BUBBLE_DIMS: 44,
 		ROW_HEIGHT: 40,
 		init: function () {},
+
 		hideDialog: function () {
 			$(".dialog").slideUp(300);
 		},
+
 		getMouseCoords: function (e) {
 			var coords = { x: e.pageX, y: e.pageY };
 			return coords;
 		},
+
 		getBubbleCoords: function (bubble) {
 			var bubbleCoords = bubble.position();
 			bubbleCoords.left += ui.BUBBLE_DIMS / 2;
 			bubbleCoords.top += ui.BUBBLE_DIMS / 2;
 			return bubbleCoords;
 		},
+
 		getBubbleAngle: function (bubble, e) {
 			var mouseCoords = ui.getMouseCoords(e);
 			var bubbleCoords = ui.getBubbleCoords(bubble);
@@ -32,6 +36,7 @@ BubbleShoot.ui = (function ($) {
 			}
 			return angle;
 		},
+
 		fireBubble: function (bubble, coords, duration) {
 			bubble.getSprite().animate(
 				{
@@ -41,9 +46,20 @@ BubbleShoot.ui = (function ($) {
 				{
 					duration: duration,
 					easing: "linear",
+					complete: function () {
+						if (bubble.getRow() !== null) {
+							bubble
+								.getSprite()
+								.css({
+									left: bubble.getCoords().left - ui.BUBBLE_DIMS / 2,
+									top: bubble.getCoords().top - ui.BUBBLE_DIMS / 2,
+								});
+						}
+					},
 				}
 			);
 		},
+
 		drawBoard: function (board) {
 			var rows = board.getRows();
 			var gameArea = $("#board");
@@ -63,6 +79,10 @@ BubbleShoot.ui = (function ($) {
 					}
 				}
 			}
+		},
+
+		drawBubblesRemaining: function (numBubbles) {
+			$("#bubblesRemaining").text(numBubbles);
 		},
 	};
 	return ui;
